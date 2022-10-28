@@ -1,0 +1,39 @@
+/*  */
+
+#include <Servo.h>
+
+Servo servo_dedo1;  
+Servo servo_dedo2;  
+
+int semg = 34;  
+int val;    
+
+int pines_servo[5]={12,13};
+
+void setup() {
+  servo_dedo1.attach(pines_servo[0]);  
+  servo_dedo2.attach(pines_servo[1]); 
+}
+
+void loop() {
+  val = cal_intencion_posi_dedo(semg);
+
+  val = map(val, 0, 1023, 0, 180);     
+  servo_dedo1.write(val);    
+  servo_dedo2.write(val); 
+  delay(15);                           
+}
+
+
+int cal_intencion_posi_dedo(int pin){
+    val = analogRead(pin);
+    int aux_result = 0;
+    
+    for(int i=0;i<20;i++){
+      aux_result+=val;
+    }
+    
+    aux_result = aux_result/20;
+    
+    return aux_result;
+}
